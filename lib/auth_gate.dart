@@ -28,13 +28,13 @@ class AuthGate extends StatelessWidget {
         CollectionReference users = FirebaseFirestore.instance.collection('users');
 
         users.doc(userId).get().then((DocumentSnapshot documentSnapshot) {
-          print('here1');
+          storage.write(key: 'userId', value: userId).then((value) => print('userId saved'));
           if (documentSnapshot.exists) {
                   print('here2'); 
                   print(documentSnapshot.get('profileUrl'));
             if(documentSnapshot.get('profileUrl') != null){
               print('profile exists');
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyRoutes(userId: userId)));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyRoutes()));
             }else{
               print('profile does not exist');
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AddDetails()));
@@ -53,7 +53,7 @@ class AuthGate extends StatelessWidget {
 
         });
         print('here4');
-      return CircularProgressIndicator();
+      return Center(child: CircularProgressIndicator());
         
     }
     );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'post_data.dart';
 import 'grid_home.dart';
+import 'profile.dart';
+import 'search.dart';
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -10,10 +12,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
    int _selectedIndex = 0;  
+  
   static  List<Widget> _widgetOptions = <Widget>[  
      TopicGridView(),  
-    Text('Search Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),  
-    Text('Profile Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)), 
+    SearchUser(),  
+    Profile(), 
     PostDataWidget()
   ];  
   

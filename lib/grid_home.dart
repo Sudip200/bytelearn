@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'swipe_video.dart';
 class TopicGridView extends StatelessWidget {
   final List<String> topics = ['astronomy', 'physics', 'chemistry', 'biology', 'math'];
 
@@ -23,12 +23,16 @@ class TopicGridView extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               // Handle topic selection here
+             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SwipeView(topic: topics[index])));
               print('Selected topic: ${topics[index]}');
             },
             child: Card(
               elevation: 4.0,
+
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
+            
+ 
+                borderRadius: BorderRadius.circular(10.0),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

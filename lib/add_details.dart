@@ -76,7 +76,7 @@ _image = File(result.files.single.path!);
       print('Details saved to Firestore');
       return Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MyRoutes(userId: userId)),
+        MaterialPageRoute(builder: (context) => MyRoutes()),
       );
     }
   }

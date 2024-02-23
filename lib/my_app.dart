@@ -5,9 +5,8 @@ import 'main.dart';
 import 'home.dart';
 import 'add_details.dart';
 class MyRoutes extends StatelessWidget {
-  final String  userId;
- 
-  const MyRoutes({Key? key, required this.userId}) : super(key: key);
+  
+  const MyRoutes({super.key});
   
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,6 @@ class MyRoutes extends StatelessWidget {
       routes: {
         '/home': (context) => MyHomePage(),
         '/auth': (context) =>  AuthGate(),
-       
       },
     );
   }
