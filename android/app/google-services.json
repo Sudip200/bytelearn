@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "320317641150",
+    "project_id": "fir-flutter-45a3a",
+    "storage_bucket": "fir-flutter-45a3a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320317641150:android:c2c2452b22dffbb48fe9ef",
+        "android_client_info": {
+          "package_name": "com.example.bytelearn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAixydsuxJX5J9FA0nfhjRXt1r07Jcf8Q8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
