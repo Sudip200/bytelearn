@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'auth_gate.dart';
 import 'main.dart';
+import 'home.dart';
 import 'add_details.dart';
 class MyRoutes extends StatelessWidget {
   final String  userId;
@@ -18,7 +19,7 @@ class MyRoutes extends StatelessWidget {
       ),
       initialRoute: '/home',
       routes: {
-        '/home': (context) => MyHomePage(userId: userId),
+        '/home': (context) => MyHomePage(),
         '/auth': (context) =>  AuthGate(),
        
       },

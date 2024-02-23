@@ -21,40 +21,40 @@ class AuthGate extends StatelessWidget {
             providers: [EmailAuthProvider(),GoogleProvider(clientId: '320317641150-65u4mabh86lq6nm08ueu5e2s4n77diej.apps.googleusercontent.com')],
           );
         }
-       print(snapshot.data!);
+       
         User user = snapshot.data!;
         String userId = user.uid;
         String email = user.email!;
         CollectionReference users = FirebaseFirestore.instance.collection('users');
 
         users.doc(userId).get().then((DocumentSnapshot documentSnapshot) {
+          print('here1');
           if (documentSnapshot.exists) {
-            docExists = true;
-          
-             documentSnapshot.get('profileUrl').then((value) {
-              if (value != null) {
-                profileExists = true;
-              }
-            });
+                  print('here2'); 
+                  print(documentSnapshot.get('profileUrl'));
+            if(documentSnapshot.get('profileUrl') != null){
+              print('profile exists');
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyRoutes(userId: userId)));
+            }else{
+              print('profile does not exist');
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AddDetails()));
+            } 
           } else {
-            docExists = false;
-          }
-        });
-        if (docExists && profileExists) {
-          storage.write(key: 'userId', value: userId).then((value) => print('userId saved'));
-          return MyRoutes(userId: userId);
-        }else{
+            users.doc(userId).set({
+            'email': email,
+            'profileUrl': null,
+            'name': null,
+            'bio': null,
+          });
+          print('here3');
           storage.write(key: 'userId', value: userId).then((value) => print('userId saved'));
           return AddDetails();
-        }
+          }
 
-
-        // users.doc(userId).set({
-        //   'email': email,
-        //   'userId': userId,
-        // });
-        // storage.write(key: 'userId', value: userId).then((value) => print('userId saved'));
-        // return MyRoutes(userId: userId, email: email);
+        });
+        print('here4');
+      return CircularProgressIndicator();
+        
     }
     );
   }
