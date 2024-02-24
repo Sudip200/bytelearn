@@ -18,7 +18,7 @@ class SwipeView extends StatefulWidget {
 
 class _SwipeViewState extends State<SwipeView> {
   late VideoPlayerController _controller;
-  List<String>? videoUrls;
+  late List videoUrls;
   List<SwipeItem> _swipeItems = <SwipeItem>[];
   MatchEngine? _matchEngine;
   @override
@@ -32,11 +32,13 @@ class _SwipeViewState extends State<SwipeView> {
    // get firebase collection reference
    CollectionReference collectionReference = FirebaseFirestore.instance.collection('posts');
    // make  query to get posts with the topic
-   QuerySnapshot querySnapshot = await collectionReference.where('topic', isEqualTo: widget.topic).get();
+   QuerySnapshot querySnapshot = await collectionReference.where('topic', isEqualTo: widget.topic).where('type',isEqualTo: 'video').get();
     // get the documents from the query
     List<QueryDocumentSnapshot> docs = querySnapshot.docs;
-    // get the video urls from the documents
-    videoUrls = docs.map((e) => e['fileUrl']).cast<String>().toList();
+    // get the all post details from the documents
+
+
+    videoUrls = docs.map((e) => e).toList();
     
   // ListResult result = await FirebaseStorage.instance.ref().listAll();
 
@@ -46,7 +48,7 @@ class _SwipeViewState extends State<SwipeView> {
     _matchEngine = MatchEngine(swipeItems: _swipeItems);
 
     _controller = VideoPlayerController.networkUrl(
-      Uri.parse(_swipeItems[0].content!),
+      Uri.parse(_swipeItems[0].content['fileUrl']),
     )..initialize().then((_) {
         setState(() {});
       });
@@ -57,7 +59,7 @@ class _SwipeViewState extends State<SwipeView> {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        title: Text('Swipe Videos'),
+        title: Text('Swipe to view videos'),
         //add back button
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -88,15 +90,77 @@ class _SwipeViewState extends State<SwipeView> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
               color: Colors.black,
+
             ),
             alignment: Alignment.center,
-            child: AspectRatio(aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller))
-          );
+            //create instagram reel ui
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                 AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  ),
+                
+                //add padding to the bottom of the video
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        _swipeItems[index].content['title'],
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(0),
+                      //add text button to show description on alert dialog
+                      //show animation pop up
+                      child: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Description'),
+                                content: Text(_swipeItems[index].content['description']),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Close'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Text(
+                          'Show Description',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ),
+                  ],
+                )
+              ],
+            ),
+            );
         },
         itemChanged: (SwipeItem item, int index) {
           _controller = VideoPlayerController.networkUrl(
-            Uri.parse(_swipeItems[index].content!),
+            Uri.parse(_swipeItems[index].content['fileUrl']),
           )..initialize().then((_) {
             // Ensure the first frame is shown after initialization
             setState(() {});
@@ -107,8 +171,12 @@ class _SwipeViewState extends State<SwipeView> {
         rightSwipeAllowed: true,
         upSwipeAllowed: false,
         fillSpace: true,
+        
 
       )
+
     );
+
   }
+
 }

@@ -28,7 +28,7 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     //CHECK IF IT IS THE USER'S PROFILE
-   
+    
     _getUserData();
   }
   Future<void> _ifItsme() async{
@@ -42,15 +42,15 @@ class _ProfileState extends State<Profile> {
     try{
   //String? userId = await _secureStorage.read(key: 'userId');
     //print(userId);
-   
+   String? myuserId = await _secureStorage.read(key: 'userId');
 
     final user = await FirebaseFirestore.instance.collection('users').doc(widget.userId).get();
     final posts = await FirebaseFirestore.instance.collection('posts').where('userId', isEqualTo: widget.userId).get();
     final follwerdb = await FirebaseFirestore.instance.collection('follower').where('follweeId', isEqualTo: widget.userId).get();
-    final follodata = await FirebaseFirestore.instance.collection('follower').where('follweeId', isEqualTo: widget.userId).where('follwerId', isEqualTo: widget.userId).get();
+    final follodata = await FirebaseFirestore.instance.collection('follower').where('follweeId', isEqualTo: widget.userId).where('follwerId', isEqualTo:myuserId ).get();
 
-    print(user['profileUrl']);
-    print(posts.docs.toString());
+    
+    
   if(follodata.docs.isNotEmpty){
     setState(() {
       isFollowing = true;
@@ -64,7 +64,7 @@ class _ProfileState extends State<Profile> {
       _followers = follwerdb.docs.length;
     });
 
-    print('posts: $_posts[0]');
+    
     _controller = VideoPlayerController.networkUrl(
       Uri.parse(_posts[0]),
     )..initialize().then((_) {

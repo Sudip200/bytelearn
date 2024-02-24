@@ -30,7 +30,7 @@ class _PostDataWidgetState extends State<PostDataWidget> {
 
       // Upload file to Firebase Storage
       Reference storageReference =
-          FirebaseStorage.instance.ref().child('posts/$userId/$fileName');
+      FirebaseStorage.instance.ref().child('posts/$userId/$fileName');
       UploadTask uploadTask = storageReference.putFile(_selectedFile, SettableMetadata(contentType: '$_type/$fileExtension'));
       await uploadTask.whenComplete(() => null);
 
@@ -66,106 +66,136 @@ class _PostDataWidgetState extends State<PostDataWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Post Data'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Title'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _title = value!;
-                },
+  appBar: AppBar(
+    title: Text('Create Post'),
+  ),
+  body: Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'Title',
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue),
               ),
-              SizedBox(height: 16),
-              DropdownButtonFormField(
-                value: _topic,
-                items: ['astronomy', 'physics', 'chemistry', 'biology']
-                    .map((topic) => DropdownMenuItem(
-                          value: topic,
-                          child: Text(topic),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a title';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              _title = value!;
+            },
+          ),
+          SizedBox(height: 16),
+          DropdownButtonFormField(
+            value: _topic,
+            items: ['astronomy', 'biology', 'chemistry', 'physics','computer','others']
+                .map((topic) => DropdownMenuItem(
+                      value: topic,
+                      child: Text(topic),
+                    ))
+                .toList(),
+            onChanged: (value) {
+              setState(() {
+                _topic = value.toString();
+              });
+            },
+            decoration: InputDecoration(
+              labelText: 'Topic',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          SizedBox(height: 16),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'Description',
+              border: OutlineInputBorder(),
+            ),
+            maxLines: 3,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a description';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              _description = value!;
+            },
+          ),
+          SizedBox(height: 16),
+          Row(
+            children: [
+              Text('Type:'),
+              SizedBox(width: 16),
+              DropdownButton(
+                value: _type,
+                items: ['image', 'video']
+                    .map((type) => DropdownMenuItem(
+                          value: type,
+                          child: Text(type),
                         ))
                     .toList(),
                 onChanged: (value) {
                   setState(() {
-                    _topic = value.toString();
+                    _type = value.toString();
                   });
                 },
-                decoration: InputDecoration(labelText: 'Topic'),
               ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Description'),
-                maxLines: 3,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _description = value!;
-                },
-              ),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  Text('Type:'),
-                  SizedBox(width: 16),
-                  DropdownButton(
-                    value: _type,
-                    items: ['image', 'video']
-                        .map((type) => DropdownMenuItem(
-                              value: type,
-                              child: Text(type),
-                            ))
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _type = value.toString();
-                      });
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    FilePickerResult? result =
-                        await FilePicker.platform.pickFiles(type: FileType.any);
-                     //detect flie type
-                    
-                    if (result != null) {
-                      setState(() {
-                        _selectedFile = File(result.files.single.path!);
-                        fileExtension = _selectedFile.path.split('.').last;
-                      });
-
-                     
-                     
-                    }
-                  }
-                },
-                child: Text('Select File'),
-              ),
-              ElevatedButton(onPressed: _uploadFile, child: Text('Upload')),
             ],
           ),
-        ),
+          SizedBox(height: 16),
+          ElevatedButton(
+            style:  ElevatedButton.styleFrom(
+    padding: EdgeInsets.symmetric(vertical: 20), // Increase vertical padding
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+    minimumSize: Size(double.infinity, 0), // Set width to full
+  ),
+            onPressed: () async {
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
+                FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.any);
+                if (result != null) {
+                  setState(() {
+                    _selectedFile = File(result.files.single.path!);
+                    fileExtension = _selectedFile.path.split('.').last;
+                  });
+                }
+              }
+            },
+            child: Text('Select File'),
+          ),
+          SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
+                _uploadFile();
+              }
+            },
+            style:ElevatedButton.styleFrom(
+    padding: EdgeInsets.symmetric(vertical: 20), // Increase vertical padding
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+    minimumSize: Size(double.infinity, 0), // Set width to full
+  ),
+            child: Text('Upload'),
+          ),
+        ],
       ),
-    );
+    ),
+  ),
+);
   }
+  
 }

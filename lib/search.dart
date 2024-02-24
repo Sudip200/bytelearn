@@ -23,7 +23,7 @@ List users=[];
   Future<void> _getUserData() async {
     try{
       final user = await FirebaseFirestore.instance.collection('users').get();
-      print(user.docs.toString());
+ 
       setState(() {
         users = user.docs;
       });

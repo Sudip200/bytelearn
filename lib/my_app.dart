@@ -12,10 +12,8 @@ class MyRoutes extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
-        useMaterial3: true,
-      ),
+      theme: ThemeData.dark(useMaterial3: true),
+      color: Color.fromARGB(255, 68, 22, 149),
       initialRoute: '/home',
       routes: {
         '/home': (context) => MyHomePage(),

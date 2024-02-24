@@ -15,10 +15,32 @@ class AuthGate extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    
     return StreamBuilder<User?>(stream: FirebaseAuth.instance.authStateChanges(), builder: (context,snapshot){
       if (!snapshot.hasData) {
           return SignInScreen(
             providers: [EmailAuthProvider(),GoogleProvider(clientId: '320317641150-65u4mabh86lq6nm08ueu5e2s4n77diej.apps.googleusercontent.com')],
+            oauthButtonVariant: OAuthButtonVariant.icon_and_text,
+             headerBuilder: (context, constraints, shrinkOffset) => const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Icon(Icons.lightbulb,size: 100.0,color: Colors.deepPurple,),),
+              subtitleBuilder: (context, action) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                
+              );
+            },
+            footerBuilder:  (context, action) {
+              return const Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: Text(
+                  'By signing in, you agree to our terms and conditions.',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              );
+            },
+            
+            
           );
         }
        
@@ -30,10 +52,9 @@ class AuthGate extends StatelessWidget {
         users.doc(userId).get().then((DocumentSnapshot documentSnapshot) {
           storage.write(key: 'userId', value: userId).then((value) => print('userId saved'));
           if (documentSnapshot.exists) {
-                  print('here2'); 
-                  print(documentSnapshot.get('profileUrl'));
+                
             if(documentSnapshot.get('profileUrl') != null){
-              print('profile exists');
+             
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyRoutes()));
             }else{
               print('profile does not exist');
@@ -46,13 +67,13 @@ class AuthGate extends StatelessWidget {
             'name': null,
             'bio': null,
           });
-          print('here3');
+
           storage.write(key: 'userId', value: userId).then((value) => print('userId saved'));
           return AddDetails();
           }
 
         });
-        print('here4');
+
       return Center(child: CircularProgressIndicator());
         
     }

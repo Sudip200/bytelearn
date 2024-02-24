@@ -35,8 +35,8 @@ class _ProfileState extends State<Profile> {
     print(userId);
     final user = await FirebaseFirestore.instance.collection('users').doc(userId).get();
     final posts = await FirebaseFirestore.instance.collection('posts').where('userId', isEqualTo: userId).get();
-    print(user['profileUrl']);
-    print(posts.docs.toString());
+   
+    
 
     setState(() {
       _profilePic = user['profileUrl'];
@@ -44,7 +44,7 @@ class _ProfileState extends State<Profile> {
       _bio = user['bio'];
       _posts = posts.docs.map((doc) => doc['fileUrl']).toList().cast<String>();
     });
-    print('posts: $_posts[0]');
+    
     _controller = VideoPlayerController.networkUrl(
       Uri.parse(_posts[0]),
     )..initialize().then((_) {

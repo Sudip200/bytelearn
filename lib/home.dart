@@ -29,10 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override  
   Widget build(BuildContext context) {  
     return Scaffold(  
-      appBar: AppBar(  
-        title: const Text('ByteLearn'),  
-          backgroundColor: Color.fromARGB(255, 224, 219, 219),
-      ),  
+       
       body: Center(  
         child: _widgetOptions.elementAt(_selectedIndex),  
       ),  
@@ -40,22 +37,27 @@ class _MyHomePageState extends State<MyHomePage> {
         landscapeLayout: BottomNavigationBarLandscapeLayout.spread,  
         items: const <BottomNavigationBarItem>[  
           BottomNavigationBarItem(  
-            icon: Icon(Icons.home),  
+            icon: Icon(Icons.home,
+            color: Color.fromARGB(255, 68, 22, 149),),  
              label: 'Home',
-            backgroundColor: Color.fromARGB(255, 244, 242, 242) 
+            backgroundColor: Color.fromARGB(255, 244, 242, 242) ,
+             
           ),  
           BottomNavigationBarItem(  
-            icon: Icon(Icons.search),  
+            icon: Icon(Icons.search,
+            color: Color.fromARGB(255, 68, 22, 149)),  
               label: 'Search',
             backgroundColor: Color.fromARGB(255, 244, 242, 242) 
           ),  
           BottomNavigationBarItem(  
-            icon: Icon(Icons.person),  
+            icon: Icon(Icons.person,
+            color: Color.fromARGB(255, 68, 22, 149)),  
              label: 'Profile',
             backgroundColor: Color.fromARGB(255, 244, 242, 242) ,  
           ),  
           BottomNavigationBarItem(  
-            icon: Icon(Icons.upload_file),  
+            icon: Icon(Icons.upload_file,
+            color: Color.fromARGB(255, 68, 22, 149)),  
              label: 'Post',
             backgroundColor: Color.fromARGB(255, 244, 242, 242) ,  
           ), 

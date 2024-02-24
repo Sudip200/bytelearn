@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'swipe_video.dart';
 class TopicGridView extends StatelessWidget {
-  final List<String> topics = ['astronomy', 'physics', 'chemistry', 'biology', 'math'];
+  final List<String> topics = ['astronomy', 'physics', 'chemistry', 'biology', 'math','computer'];
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +32,19 @@ class TopicGridView extends StatelessWidget {
               shape: RoundedRectangleBorder(
             
  
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(100.0),
               ),
-              child: Column(
+              child:
+              Center(
+                child:
+               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // You can use different icons for each topic
                   Icon(
                     _getIconForTopic(topics[index]),
                     size: 48.0,
-                    color: Colors.blue,
+                   color: Color.fromARGB(255, 128, 64, 237),
                   ),
                   SizedBox(height: 8.0),
                   Text(
@@ -51,7 +54,9 @@ class TopicGridView extends StatelessWidget {
                 ],
               ),
             ),
+          ),
           );
+
         },
       ),
     )
@@ -68,6 +73,10 @@ class TopicGridView extends StatelessWidget {
         return Icons.science;
       case 'biology':
         return Icons.eco;
+      case 'computer':
+        return Icons.computer;
+      case 'math':
+        return Icons.calculate;
       default:
         return Icons.category;
     }
