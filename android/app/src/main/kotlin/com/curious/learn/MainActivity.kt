@@ -1,4 +1,4 @@
-package com.example.bytelearn
+package com.curious.learn
 
 import io.flutter.embedding.android.FlutterActivity
 

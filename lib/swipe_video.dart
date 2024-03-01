@@ -94,8 +94,8 @@ class _SwipeViewState extends State<SwipeView> {
             ),
             alignment: Alignment.center,
             //create instagram reel ui
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Stack(
+            alignment: Alignment.center,
               children: [
                  AspectRatio(
                     aspectRatio: _controller.value.aspectRatio,
@@ -106,14 +106,17 @@ class _SwipeViewState extends State<SwipeView> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
+
                       child: Text(
                         _swipeItems[index].content['title'],
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
+                         shadows:[Shadow(color: Colors.black,blurRadius: 7.0 )] ,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -122,6 +125,7 @@ class _SwipeViewState extends State<SwipeView> {
                       padding: const EdgeInsets.all(0),
                       //add text button to show description on alert dialog
                       //show animation pop up
+                      
                       child: GestureDetector(
                         onTap: () {
                           showDialog(
@@ -129,24 +133,31 @@ class _SwipeViewState extends State<SwipeView> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 title: Text('Description'),
-                                content: Text(_swipeItems[index].content['description']),
+                                content: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Text(_swipeItems[index].content['description']),
+
+                                ),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
                                     child: Text('Close'),
+                                    
                                   ),
                                 ],
                               );
                             },
                           );
                         },
-                        child: Text(
+                        child:  Text(
                           'Show Description',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
+                            height:2.0,
+                           background: Paint()..color,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -154,8 +165,11 @@ class _SwipeViewState extends State<SwipeView> {
                     ),
                   ],
                 )
+              ,
+                
               ],
             ),
+
             );
         },
         itemChanged: (SwipeItem item, int index) {

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import  'package:video_player/video_player.dart';
+import 'main.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -67,7 +68,7 @@ class _ProfileState extends State<Profile> {
             icon: Icon(Icons.logout),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
-              Navigator.pushReplacementNamed(context, '/login');
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MyApp()));
             },
           ),
         ],

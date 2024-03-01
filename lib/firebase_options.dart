@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAixydsuxJX5J9FA0nfhjRXt1r07Jcf8Q8',
-    appId: '1:320317641150:android:c2c2452b22dffbb48fe9ef',
+    appId: '1:320317641150:android:60fe778a89b3073d8fe9ef',
     messagingSenderId: '320317641150',
     projectId: 'fir-flutter-45a3a',
     storageBucket: 'fir-flutter-45a3a.appspot.com',
@@ -66,6 +66,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '320317641150',
     projectId: 'fir-flutter-45a3a',
     storageBucket: 'fir-flutter-45a3a.appspot.com',
+    androidClientId: '320317641150-v62q7ikkl5rarj9bbnc4shgq4ajpsgab.apps.googleusercontent.com',
+    iosClientId: '320317641150-2ke1e9ice9lr7oribqql2c5gkdgsdp6b.apps.googleusercontent.com',
     iosBundleId: 'com.example.bytelearn',
   );
 
@@ -75,6 +77,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '320317641150',
     projectId: 'fir-flutter-45a3a',
     storageBucket: 'fir-flutter-45a3a.appspot.com',
+    androidClientId: '320317641150-v62q7ikkl5rarj9bbnc4shgq4ajpsgab.apps.googleusercontent.com',
+    iosClientId: '320317641150-rp21lac7dm87i68jspvq0lqnbpe0kl5d.apps.googleusercontent.com',
     iosBundleId: 'com.example.bytelearn.RunnerTests',
   );
 }

@@ -21,6 +21,7 @@ class _PostDataWidgetState extends State<PostDataWidget> {
   String _description = '';
   String _type = 'image';
   String fileExtension = '';
+  bool isFileSelected = false;
    // Default type
 
   Future<void> _uploadFile() async {
@@ -131,28 +132,9 @@ class _PostDataWidgetState extends State<PostDataWidget> {
             },
           ),
           SizedBox(height: 16),
-          Row(
-            children: [
-              Text('Type:'),
-              SizedBox(width: 16),
-              DropdownButton(
-                value: _type,
-                items: ['image', 'video']
-                    .map((type) => DropdownMenuItem(
-                          value: type,
-                          child: Text(type),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _type = value.toString();
-                  });
-                },
-              ),
-            ],
-          ),
+          
           SizedBox(height: 16),
-          ElevatedButton(
+         !isFileSelected ? ElevatedButton(
             style:  ElevatedButton.styleFrom(
     padding: EdgeInsets.symmetric(vertical: 20), // Increase vertical padding
     shape: RoundedRectangleBorder(
@@ -163,18 +145,21 @@ class _PostDataWidgetState extends State<PostDataWidget> {
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.any);
+                FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.video);
+       
                 if (result != null) {
                   setState(() {
                     _selectedFile = File(result.files.single.path!);
                     fileExtension = _selectedFile.path.split('.').last;
+                    
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("File selected"),));
+                    isFileSelected = true;
                   });
                 }
               }
             },
             child: Text('Select File'),
-          ),
-          SizedBox(height: 16),
+          ):
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {

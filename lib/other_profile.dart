@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import  'package:video_player/video_player.dart';
 import 'profile.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 class Profile extends StatefulWidget {
   final String? userId;
   const Profile({Key? key, this.userId}) : super(key: key);
@@ -21,6 +24,7 @@ class _ProfileState extends State<Profile> {
   int _followers = 0;
   List<String> _posts = [];
   bool isFollowing = false;
+  List<Uint8List> _thumbnail = [];
   VideoPlayerController? _controller;
   
 
@@ -28,8 +32,8 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     //CHECK IF IT IS THE USER'S PROFILE
-    
     _getUserData();
+ 
   }
   Future<void> _ifItsme() async{
     String? myuserId = await _secureStorage.read(key: 'userId');
@@ -86,21 +90,23 @@ class _ProfileState extends State<Profile> {
       'follweeId': widget.userId,
     });
   }
+  void getThumbnail() async {
+    for(int i=0;i<_posts.length;i++){
+   final uint8list = await VideoThumbnail.thumbnailData(video: _posts[i], imageFormat: ImageFormat.JPEG, maxWidth: 128, quality: 75);
+   setState(() {
+      _thumbnail.add(uint8list!);
+   });
+
+    }
+   
+  }
   @override
   Widget build(BuildContext context) {
     //Instagram like profile page
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.pushReplacementNamed(context, '/login');
-            },
-          ),
-        ],
+
       ),
       body: ListView(
         children: [
@@ -151,7 +157,11 @@ class _ProfileState extends State<Profile> {
             ),
             itemCount: _posts.length,
             itemBuilder: (context, index) {
-              return VideoPlayer(_controller!);
+              return VideoPlayer(VideoPlayerController.networkUrl(Uri.parse(_posts[index]))..initialize().then((_) {
+
+                setState(() {});
+              }
+              ));
             },
           ),
         ],

@@ -69,7 +69,7 @@ class AuthGate extends StatelessWidget {
           });
 
           storage.write(key: 'userId', value: userId).then((value) => print('userId saved'));
-          return AddDetails();
+          return Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AddDetails()));
           }
 
         });
